@@ -92,7 +92,7 @@
     }
     a { text-decoration: none; color: inherit; }
 
-    /* ===== MODERN MINIMALIST LAMP - FIXED BELOW HEADER ===== */
+    /* ===== REDESIGNED GLASS GLOBE LAMP - FIXED BELOW HEADER ===== */
     .theme-toggle {
       position: fixed;
       top: 80px;
@@ -109,7 +109,7 @@
       filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4));
     }
 
-    .modern-lamp {
+    .glass-lamp {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -117,11 +117,11 @@
       transition: transform 0.2s ease;
     }
 
-    .theme-toggle:hover .modern-lamp {
+    .theme-toggle:hover .glass-lamp {
       transform: rotateX(1deg) rotateY(-1deg);
     }
 
-    .modern-lamp.pulling {
+    .glass-lamp.pulling {
       animation: pullLamp 0.3s ease;
     }
 
@@ -131,41 +131,67 @@
       100% { transform: rotateX(2deg) rotateY(-2deg) translateY(0); }
     }
 
-    /* Cord */
+    /* Cord with decorative knot */
     .lamp-cord {
       width: 2px;
-      height: 45px;
+      height: 40px;
       background: linear-gradient(to bottom, #9ca3af, #6b7280);
       border-radius: 1px;
-      margin-bottom: 2px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      position: relative;
     }
 
-    .modern-lamp.pulling .lamp-cord {
-      height: 55px;
+    .lamp-knot {
+      width: 6px;
+      height: 6px;
+      background: #8b5cf6;
+      border-radius: 50%;
+      position: absolute;
+      top: 30px;
+      left: -2px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
-    /* Cylindrical shade */
-    .lamp-shade {
-      width: 40px;
-      height: 28px;
+    .glass-lamp.pulling .lamp-cord {
+      height: 50px;
+    }
+
+    /* Metallic cap */
+    .lamp-cap {
+      width: 30px;
+      height: 12px;
       background: linear-gradient(145deg, #e5e7eb, #d1d5db);
-      border-radius: 20px 20px 8px 8px;
+      border-radius: 6px 6px 2px 2px;
+      margin-top: -2px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      z-index: 2;
+    }
+
+    /* Glass globe */
+    .lamp-globe {
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(200,200,200,0.3));
+      border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 10px 15px -5px rgba(0,0,0,0.4);
+      backdrop-filter: blur(2px);
       border: 1px solid rgba(255,255,255,0.2);
-      margin-bottom: 2px;
+      box-shadow: 0 10px 20px -5px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.5);
+      margin-top: -4px;
+      position: relative;
+      z-index: 1;
     }
 
+    /* Inner bulb */
     .lamp-bulb {
       width: 24px;
       height: 24px;
       background: radial-gradient(circle at 30% 30%, var(--lamp-color), color-mix(in srgb, var(--lamp-color) 50%, #333));
       border-radius: 50%;
-      box-shadow: 0 0 20px var(--lamp-color);
-      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 0 25px var(--lamp-color);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
     body.light-mode .lamp-bulb {
@@ -175,14 +201,14 @@
 
     /* Downward light glow */
     .lamp-glow {
-      position: relative;
-      width: 60px;
-      height: 50px;
+      width: 70px;
+      height: 60px;
       background: radial-gradient(ellipse at top, var(--lamp-color) 0%, transparent 80%);
-      filter: blur(12px);
+      filter: blur(15px);
       opacity: 0.6;
-      margin-top: -20px;
+      margin-top: -30px;
       pointer-events: none;
+      z-index: 0;
     }
 
     body.light-mode .lamp-glow {
@@ -195,7 +221,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 2px;
+      margin-top: -5px;
+      z-index: 3;
     }
 
     .pull-chain {
@@ -204,20 +231,22 @@
       background: #9ca3af;
     }
 
-    .modern-lamp.pulling .pull-chain {
+    .glass-lamp.pulling .pull-chain {
       height: 28px;
     }
 
-    .pull-knob {
-      width: 8px;
-      height: 8px;
-      background: radial-gradient(circle at 30% 30%, #e5e7eb, #9ca3af);
+    .pull-ring {
+      width: 10px;
+      height: 10px;
+      border: 2px solid #e5e7eb;
       border-radius: 50%;
+      background: transparent;
       margin-top: 2px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
     }
 
-    .modern-lamp.pulling .pull-knob {
+    .glass-lamp.pulling .pull-ring {
       transform: translateY(6px);
     }
 
@@ -881,17 +910,20 @@
 
 <div id="imageModal"><img id="modalImg" src="" alt="Preview"></div>
 
-<!-- Modern Minimalist Lamp - Fixed below header -->
+<!-- Redesigned Glass Globe Lamp - Fixed below header -->
 <div class="theme-toggle" id="themeToggle">
-  <div class="modern-lamp" id="lamp">
-    <div class="lamp-cord"></div>
-    <div class="lamp-shade">
+  <div class="glass-lamp" id="lamp">
+    <div class="lamp-cord">
+      <div class="lamp-knot"></div>
+    </div>
+    <div class="lamp-cap"></div>
+    <div class="lamp-globe">
       <div class="lamp-bulb"></div>
     </div>
     <div class="lamp-glow"></div>
     <div class="lamp-pull">
       <div class="pull-chain"></div>
-      <div class="pull-knob"></div>
+      <div class="pull-ring"></div>
     </div>
   </div>
 </div>
@@ -973,7 +1005,7 @@
 <!-- Fast Sales is hidden -->
 <section id="fast-sales" style="display:none;"></section>
 
-<!-- ===== PREORDER PC BUILDS - CORRECTED FILENAMES ===== -->
+<!-- ===== PREORDER PC BUILDS ===== -->
 <section id="hot">
   <h2 class="section-title">Preorder PC Builds</h2>
   <div class="section-subtitle">🖥 Custom Gaming PCs • Built On Demand</div>
@@ -1023,11 +1055,12 @@
 
 <div class="installment-banner">💳 0% Interest Installment Available • SPayLater</div>
 
-<!-- ===== PREORDER CONSOLES - USING ORIGINAL NAMES ===== -->
+<!-- ===== PREORDER CONSOLES ===== -->
 <section id="preorder-console">
   <h2 class="section-title">Preorder Consoles</h2>
   <div class="section-subtitle">🎮 Used Units • Reserve Before Stock Arrival</div>
   <div class="hot-grid">
+    <!-- console cards (unchanged) -->
     <div class="hot-card tilt-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/ps4-slim.jpg" alt="PS4 Slim" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS4+Slim';">
@@ -1118,23 +1151,13 @@
   © 2026 FAZGAME • Faz Service, Faz Gaming
 </footer>
 
-<!-- Fallback stock data -->
-<script>
-  window.STOCK = window.STOCK || [
-    { n: "PS5 Disc Console", p: 1450, c: "ps5", cond: "used", type: "console" },
-    { n: "Xbox Series X", p: 2100, c: "xbox", cond: "new", type: "console" },
-    { n: "Nintendo Switch OLED", p: 1200, c: "switch", cond: "new", type: "console" },
-    { n: "RTX 3060 GPU", p: 1300, c: "pc", cond: "used", type: "part" },
-    { n: "PS4 Pro 1TB", p: 650, c: "ps4", cond: "used", type: "console" },
-    { n: "Switch Lite", p: 400, c: "switch", cond: "used", type: "console" },
-    { n: "PS5 Digital Edition", p: 1300, c: "ps5", cond: "used", type: "console" },
-    { n: "Xbox Series S", p: 950, c: "xbox", cond: "new", type: "console" }
-  ];
-</script>
+<!-- Load stock.js FIRST -->
+<script src="stock.js"></script>
 
+<!-- Main script -->
 <script>
   // ===== STOCK INVENTORY LOGIC =====
-  let products = window.STOCK || [];
+  let products = window.STOCK || []; // Will be populated by stock.js
   
   const icons = {
     console: 'https://api.iconify.design/mdi/console.svg',
@@ -1300,7 +1323,7 @@
     window.open("https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(message), '_blank');
   });
 
-  // ===== THEME TOGGLE WITH MODERN LAMP =====
+  // ===== THEME TOGGLE WITH GLASS LAMP =====
   const themeToggle = document.getElementById('themeToggle');
   const lamp = document.getElementById('lamp');
   
