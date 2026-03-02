@@ -14,15 +14,78 @@
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,700,600&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== RESET & VARIABLES ===== */
+    /* ===== LIGHT/DARK MODE VARIABLES ===== */
     :root {
+      /* Dark mode (default) */
       --bg: #0b0b0f;
+      --bg-secondary: #111216;
       --card-bg: rgba(20, 22, 27, 0.7);
       --text: #fff;
+      --text-secondary: #ffffff;
       --muted: #a0a0b0;
+      --muted-secondary: #6b7280;
       --accent: #ffd84d;
+      --accent-dark: #e6c43d;
       --accent-glow: 0 0 20px rgba(255,216,77,0.5);
+      --border-color: rgba(255,255,255,0.1);
+      --card-hover: rgba(255,255,255,0.12);
+      --product-icon-bg: #111;
       --transition: 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+      --lamp-color: #ffd84d;
+      --lamp-off-color: #94a3b8;
+    }
+
+    /* Light mode */
+    body.light-mode {
+      --bg: #f5f7fa;
+      --bg-secondary: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.8);
+      --text: #1e293b;
+      --text-secondary: #0f172a;
+      --muted: #64748b;
+      --muted-secondary: #475569;
+      --accent: #eab308;
+      --accent-dark: #ca8a04;
+      --accent-glow: 0 0 20px rgba(234,179,8,0.3);
+      --border-color: rgba(0,0,0,0.1);
+      --card-hover: rgba(0,0,0,0.05);
+      --product-icon-bg: #e2e8f0;
+      --lamp-color: #eab308;
+      --lamp-off-color: #94a3b8;
+    }
+
+    body.light-mode .header-logos img {
+      filter: invert(0);
+      opacity: 0.7;
+    }
+
+    body.light-mode .social-link img {
+      filter: invert(0);
+    }
+
+    body.light-mode .product-icon img {
+      filter: invert(0);
+    }
+
+    body.light-mode .search-box {
+      background: #ffffff;
+      color: #1e293b;
+      border-color: rgba(0,0,0,0.1);
+    }
+
+    body.light-mode .filter-btn {
+      background: #ffffff;
+      color: #1e293b;
+      border-color: rgba(0,0,0,0.1);
+    }
+
+    body.light-mode .product-card {
+      background: rgba(255,255,255,0.9);
+      border-color: rgba(0,0,0,0.1);
+    }
+
+    body.light-mode .product-card:hover {
+      background: #ffffff;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,18 +95,117 @@
       color: var(--text); 
       overflow-x: hidden; 
       line-height: 1.5;
+      transition: background-color 0.3s ease, color 0.2s ease;
     }
     a { text-decoration: none; color: inherit; }
 
-    /* ===== HEADER - No joystick ===== */
+    /* ===== HANGING LAMP ===== */
+    .theme-toggle {
+      position: fixed;
+      top: 80px;
+      right: 30px;
+      z-index: 1001;
+      cursor: pointer;
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+      animation: lampSway 8s ease-in-out infinite;
+      transform-origin: top center;
+    }
+
+    @keyframes lampSway {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(2deg); }
+      75% { transform: rotate(-2deg); }
+    }
+
+    .lamp {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lamp-chain {
+      width: 4px;
+      height: 40px;
+      background: var(--muted);
+      border-radius: 2px;
+      transition: height 0.2s ease;
+    }
+
+    .lamp.pulling .lamp-chain {
+      height: 50px;
+    }
+
+    .lamp-pull {
+      width: 20px;
+      height: 20px;
+      background: var(--muted-secondary);
+      border-radius: 50%;
+      margin-bottom: 5px;
+      transition: transform 0.2s ease;
+    }
+
+    .lamp.pulling .lamp-pull {
+      transform: translateY(10px);
+    }
+
+    .lamp-shade {
+      width: 60px;
+      height: 40px;
+      background: var(--muted);
+      border-radius: 30px 30px 10px 10px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .lamp-light {
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, var(--lamp-color) 0%, transparent 70%);
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      opacity: 0.8;
+      transition: opacity 0.3s ease, background 0.3s ease;
+      pointer-events: none;
+    }
+
+    body.light-mode .lamp-light {
+      opacity: 0.4;
+      background: radial-gradient(circle, var(--lamp-off-color) 0%, transparent 70%);
+    }
+
+    .lamp-off .lamp-light {
+      opacity: 0.2;
+      background: radial-gradient(circle, var(--lamp-off-color) 0%, transparent 70%);
+    }
+
+    .lamp-pull-indicator {
+      font-size: 18px;
+      margin-top: 5px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      color: var(--text);
+    }
+
+    .lamp.pulling .lamp-pull-indicator {
+      transform: translateY(5px);
+    }
+
+    /* ===== HEADER ===== */
     header {
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(11, 11, 15, 0.8);
+      background: rgba(var(--bg-rgb), 0.8);
       backdrop-filter: blur(12px);
       padding: 16px 24px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     .header-inner {
       max-width: 1400px;
@@ -59,10 +221,12 @@
       letter-spacing: -0.5px;
     }
     .logo span:first-child {
-      color: #ffffff; /* FAZ - white */
+      color: var(--text); /* FAZ - follows theme */
+      transition: color 0.2s ease;
     }
     .logo span:last-child {
-      color: var(--accent); /* GAME - yellow */
+      color: var(--accent); /* GAME - accent color */
+      transition: color 0.2s ease;
     }
     .header-logos {
       display: flex;
@@ -81,6 +245,10 @@
       filter: invert(1) drop-shadow(0 0 8px var(--accent));
     }
 
+    body.light-mode .header-logos img {
+      filter: invert(0);
+    }
+
     /* ===== BANNER ===== */
     .banner {
       position: relative;
@@ -89,6 +257,7 @@
       align-items: center;
       background: var(--bg);
       overflow: hidden;
+      transition: background-color 0.3s ease;
     }
 
     /* Abstract background shapes */
@@ -102,6 +271,10 @@
       border-radius: 50%;
       filter: blur(80px);
       opacity: 0.4;
+      transition: opacity 0.3s ease;
+    }
+    body.light-mode .banner-bg .shape {
+      opacity: 0.2;
     }
     .shape-1 {
       width: 400px;
@@ -169,8 +342,8 @@
 
     .badge-new {
       display: inline-block;
-      background: rgba(255,216,77,0.15);
-      border: 1px solid rgba(255,216,77,0.4);
+      background: rgba(var(--accent-rgb), 0.15);
+      border: 1px solid rgba(var(--accent-rgb), 0.4);
       color: var(--accent);
       font-size: 14px;
       font-weight: 600;
@@ -179,6 +352,7 @@
       margin-bottom: 24px;
       backdrop-filter: blur(4px);
       letter-spacing: 0.5px;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     }
 
     .hero-title {
@@ -188,10 +362,13 @@
       line-height: 1;
       margin-bottom: 16px;
       letter-spacing: -2px;
+      color: var(--text);
+      transition: color 0.2s ease;
     }
     .hero-title span {
       color: var(--accent);
       text-shadow: var(--accent-glow);
+      transition: color 0.2s ease, text-shadow 0.2s ease;
     }
 
     .hero-desc {
@@ -199,6 +376,7 @@
       color: var(--muted);
       margin-bottom: 32px;
       max-width: 500px;
+      transition: color 0.2s ease;
     }
 
     /* Service chips */
@@ -209,13 +387,13 @@
       margin-bottom: 40px;
     }
     .chip {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(var(--text-rgb), 0.03);
+      border: 1px solid var(--border-color);
       padding: 10px 22px;
       border-radius: 60px;
       font-size: 15px;
       font-weight: 500;
-      color: #ddd;
+      color: var(--text);
       cursor: pointer;
       transition: var(--transition);
       backdrop-filter: blur(8px);
@@ -243,19 +421,21 @@
     .stat-item h3 {
       font-size: 36px;
       font-weight: 800;
-      color: #fff;
+      color: var(--text);
       line-height: 1;
       margin-bottom: 4px;
       font-family: 'Clash Display', sans-serif;
+      transition: color 0.2s ease;
     }
     .stat-item p {
       font-size: 14px;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 1px;
+      transition: color 0.2s ease;
     }
 
-    /* Social icons - all from CDN */
+    /* Social icons */
     .social-row {
       display: flex;
       gap: 16px;
@@ -264,11 +444,11 @@
       width: 46px;
       height: 46px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.03);
+      background: rgba(var(--text-rgb), 0.03);
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid var(--border-color);
       transition: var(--transition);
     }
     .social-link img {
@@ -288,7 +468,11 @@
       filter: invert(0);
     }
 
-    /* ===== RIGHT SIDE – BIG FLOATING IMAGE WITH GLOW ===== */
+    body.light-mode .social-link img {
+      filter: invert(0);
+    }
+
+    /* Right side – floating image */
     .banner-visual {
       position: relative;
       display: flex;
@@ -298,12 +482,16 @@
 
     .orb {
       position: absolute;
-      width: 200px;  /* Bigger orbs */
+      width: 200px;
       height: 200px;
       border-radius: 50%;
       filter: blur(80px);
       opacity: 0.4;
       z-index: 1;
+      transition: opacity 0.3s ease;
+    }
+    body.light-mode .orb {
+      opacity: 0.2;
     }
     .orb-1 {
       top: 10%;
@@ -322,17 +510,23 @@
       50% { opacity: 0.6; transform: scale(1.2); }
     }
 
-    /* Your local floating image - bigger with glow */
+    /* Floating image */
     .floating-image {
       width: 100%;
-      max-width: 650px;  /* Bigger than before */
+      max-width: 650px;
       filter: drop-shadow(0 0 30px rgba(255,216,77,0.8)) drop-shadow(0 0 60px rgba(255,216,77,0.4));
       animation: levitate 6s ease-in-out infinite, glowPulse 3s ease-in-out infinite;
       transform-origin: center;
       position: relative;
       z-index: 5;
       opacity: 1;
+      transition: filter 0.3s ease;
     }
+
+    body.light-mode .floating-image {
+      filter: drop-shadow(0 0 20px rgba(234,179,8,0.4)) drop-shadow(0 0 40px rgba(234,179,8,0.2));
+    }
+
     @keyframes levitate {
       0% { transform: translateY(0) rotate(0deg); }
       50% { transform: translateY(-20px) rotate(3deg); }
@@ -343,23 +537,27 @@
       50% { filter: drop-shadow(0 0 50px rgba(255,216,77,1)) drop-shadow(0 0 90px rgba(255,216,77,0.6)); }
     }
 
-    /* ===== CTA BUTTON - CENTERED ===== */
+    body.light-mode .floating-image {
+      animation: levitate 6s ease-in-out infinite;
+    }
+
+    /* CTA Button */
     .sticky-cta {
       position: sticky;
       top: 80px;
       z-index: 900;
       background: transparent;
       padding: 16px 24px;
-      text-align: center;  /* Centered */
+      text-align: center;
       max-width: 1400px;
       margin: 0 auto;
     }
     .btn-primary {
-      display: inline-block;  /* For centering */
+      display: inline-block;
       background: var(--accent);
       color: #000;
       border: none;
-      padding: 14px 48px;  /* Wider padding like original */
+      padding: 14px 48px;
       border-radius: 60px;
       font-weight: 700;
       font-size: 16px;
@@ -370,7 +568,7 @@
       text-decoration: none;
     }
     .btn-primary:hover {
-      background: #ffe066;
+      background: var(--accent-dark);
       transform: translateY(-2px);
       box-shadow: 0 20px 30px -10px rgba(255,216,77,0.5);
     }
@@ -386,12 +584,15 @@
       font-weight: 800;
       margin-bottom: 8px;
       font-family: 'Inter', sans-serif;
+      color: var(--text);
+      transition: color 0.2s ease;
     }
     .section-subtitle {
       font-size: 13px;
       color: var(--accent);
       margin-bottom: 20px;
       opacity: 0.9;
+      transition: color 0.2s ease;
     }
     .controls {
       margin: 0 auto;
@@ -403,9 +604,9 @@
       max-width: 400px;
       padding: 14px 24px;
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: #111;
-      color: #fff;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text);
       margin-bottom: 20px;
       font-size: 14px;
       outline: none;
@@ -425,9 +626,9 @@
     .filter-btn {
       padding: 8px 16px;
       border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.05);
-      background: #111;
-      color: #fff;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text);
       cursor: pointer;
       white-space: nowrap;
       font-size: 12px;
@@ -441,11 +642,12 @@
     }
     .filter-count {
       margin-left: 6px;
-      background: #000;
-      color: #fff;
+      background: var(--bg);
+      color: var(--text);
       padding: 2px 6px;
       border-radius: 999px;
       font-size: 10px;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
     .filter-btn.active .filter-count {
       background: rgba(0,0,0,0.2);
@@ -463,37 +665,39 @@
       }
     }
 
-    /* Product card - all icons from CDN */
     .product-card {
-      background: var(--card);
+      background: var(--card-bg);
       border-radius: 16px;
       padding: 18px 16px;
       display: flex;
       gap: 16px;
       align-items: center;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color);
       transition: var(--transition);
       position: relative;
       margin: 0 auto;
       width: 100%;
+      backdrop-filter: blur(10px);
     }
     .product-card:hover {
-      background: rgba(255,255,255,0.12);
-      border-color: rgba(255,216,77,0.2);
+      background: var(--card-hover);
+      border-color: var(--accent);
     }
     .product-icon {
       width: 64px;
       height: 64px;
-      background: #111;
+      background: var(--product-icon-bg);
       border-radius: 12px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: background-color 0.2s ease;
     }
     .product-icon img {
       width: 32px;
       filter: invert(1);
+      transition: filter 0.2s ease;
     }
     .product-info {
       flex: 1;
@@ -505,6 +709,8 @@
       margin-bottom: 8px;
       padding-top: 10px;
       line-height: 1.3;
+      color: var(--text);
+      transition: color 0.2s ease;
     }
     .price-row {
       display: flex;
@@ -516,6 +722,7 @@
       color: var(--accent);
       font-weight: 800;
       font-size: 15px;
+      transition: color 0.2s ease;
     }
     .product-buy {
       background: var(--accent);
@@ -550,7 +757,7 @@
       left: 12px;
     }
 
-    /* ===== 3D HOVER FOR HOT CARDS ONLY ===== */
+    /* 3D hover for hot cards */
     .hot-card {
       position: relative;
       border-radius: 24px;
@@ -588,7 +795,6 @@
       transform: translateZ(20px);
     }
 
-    /* Metallic shine for hot cards */
     .hot-card::after {
       content: "";
       position: absolute;
@@ -613,7 +819,6 @@
       to { left: 180%; }
     }
 
-    /* Dynamic lighting overlay for hot cards only */
     .hot-card::before {
       content: "";
       position: absolute;
@@ -636,13 +841,13 @@
     }
 
     /* Other sections */
-    .installment-banner { margin: 20px auto; max-width: 1200px; font-size: 13px; text-align: center; color: rgba(255,216,77,.9); font-weight: 600; letter-spacing: .5px; animation: fadeInInstall 1.2s ease forwards; opacity: 0; }
+    .installment-banner { margin: 20px auto; max-width: 1200px; font-size: 13px; text-align: center; color: var(--accent); font-weight: 600; letter-spacing: .5px; animation: fadeInInstall 1.2s ease forwards; opacity: 0; transition: color 0.2s ease; }
     @keyframes fadeInInstall { to { opacity: 1; } }
     section:not(#stock) { padding: 60px 24px; max-width: 1200px; margin: 0 auto; }
-    section:not(#stock) .section-title { font-size: 32px; font-weight: 800; margin-bottom: 8px; font-family: 'Clash Display', sans-serif; }
+    section:not(#stock) .section-title { font-size: 32px; font-weight: 800; margin-bottom: 8px; font-family: 'Clash Display', sans-serif; color: var(--text); }
     section:not(#stock) .section-subtitle { font-size: 14px; color: var(--accent); margin-bottom: 30px; opacity: 0.9; letter-spacing: 1px; text-transform: uppercase; }
     .hot-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-    .hot-title { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+    .hot-title { font-weight: 700; font-size: 16px; margin-bottom: 4px; color: #fff; }
     .hot-desc { font-size: 13px; color: var(--muted); }
     .badge { position: absolute; top: 15px; z-index: 6; font-size: 10px; font-weight: 800; padding: 6px 12px; border-radius: 30px; }
     .badge-left { left: 15px; background: rgba(255,255,255,0.9); color: #000; }
@@ -652,9 +857,10 @@
       .hot-grid { gap: 24px; }
     }
     .payment-icons { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 30px; }
-    .payment-item { display: flex; align-items: center; gap: 12px; font-size: 15px; opacity: 0.8; }
-    .payment-item img { height: 28px; filter: invert(1); }
-    footer { text-align: center; padding: 50px 20px; color: #aaa; font-size: 14px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .payment-item { display: flex; align-items: center; gap: 12px; font-size: 15px; opacity: 0.8; color: var(--text); }
+    .payment-item img { height: 28px; filter: invert(1); transition: filter 0.2s ease; }
+    body.light-mode .payment-item img { filter: invert(0); }
+    footer { text-align: center; padding: 50px 20px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--border-color); transition: color 0.2s ease, border-color 0.2s ease; }
 
     /* Responsive */
     @media (max-width: 900px) {
@@ -665,21 +871,37 @@
       .banner-visual { order: -1; margin-bottom: 20px; }
       .floating-image { max-width: 400px; }
       .sticky-cta { text-align: center; }
+      .theme-toggle { top: 120px; right: 15px; }
     }
     @media (max-width: 600px) {
       .hero-title { font-size: 48px; }
       .hero-stats { gap: 24px; }
       .stat-item h3 { font-size: 28px; }
       .floating-image { max-width: 300px; }
+      .theme-toggle { top: 100px; right: 10px; transform: scale(0.8); }
     }
-    #preloader { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; transition: opacity 0.6s ease; }
+
+    /* Preloader & lightbox */
+    #preloader { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; align-items: center; justify-content: center; transition: opacity 0.6s ease, background 0.3s ease; }
     #preloader.hide { opacity: 0; pointer-events: none; }
     .loader-bar-wrap { width: 240px; height: 4px; background: #222; margin-top: 20px; border-radius: 10px; overflow: hidden; }
-    .loader-bar { height: 100%; width: 0%; background: var(--accent); transition: width 0.1s; }
+    .loader-bar { height: 100%; width: 0%; background: var(--accent); transition: width 0.1s, background 0.2s ease; }
     #imageModal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(6px); z-index: 10001; display: none; align-items: center; justify-content: center; cursor: zoom-out; padding: 20px; }
     #imageModal.show { display: flex; }
     #modalImg { max-width: 95%; max-height: 90vh; border-radius: 16px; box-shadow: 0 0 50px rgba(0,0,0,0.6); transform: scale(0.9); transition: transform 0.3s ease; }
     #imageModal.show #modalImg { transform: scale(1); }
+
+    /* RGB variable fallbacks */
+    body {
+      --bg-rgb: 11, 11, 15;
+      --text-rgb: 255, 255, 255;
+      --accent-rgb: 255, 216, 77;
+    }
+    body.light-mode {
+      --bg-rgb: 245, 247, 250;
+      --text-rgb: 30, 41, 59;
+      --accent-rgb: 234, 179, 8;
+    }
   </style>
 </head>
 <body>
@@ -695,14 +917,24 @@
 
 <div id="imageModal"><img id="modalImg" src="" alt="Preview"></div>
 
+<!-- Hanging Lamp Theme Toggle -->
+<div class="theme-toggle" id="themeToggle">
+  <div class="lamp" id="lamp">
+    <div class="lamp-chain"></div>
+    <div class="lamp-pull"></div>
+    <div class="lamp-shade">
+      <div class="lamp-light"></div>
+    </div>
+    <div class="lamp-pull-indicator">💡</div>
+  </div>
+</div>
+
 <header>
   <div class="header-inner">
-    <!-- Logo with FAZ white, GAME yellow -->
     <div class="logo">
       <span>FAZ</span><span>GAME</span>
     </div>
     <div class="header-logos">
-      <!-- Only platform icons - no joystick -->
       <img src="https://api.iconify.design/simple-icons/playstation.svg" alt="PlayStation">
       <img src="https://api.iconify.design/simple-icons/xbox.svg" alt="Xbox">
       <img src="https://api.iconify.design/simple-icons/nintendoswitch.svg" alt="Nintendo Switch">
@@ -747,7 +979,6 @@
       </div>
 
       <div class="social-row">
-        <!-- ALL SOCIAL ICONS FROM CDN -->
         <a class="social-link" href="https://www.tiktok.com/@syazeone" target="_blank" rel="noopener"><img src="https://api.iconify.design/simple-icons/tiktok.svg" alt="TikTok"></a>
         <a class="social-link" href="https://wa.me/60163691936" target="_blank" rel="noopener"><img src="https://api.iconify.design/simple-icons/whatsapp.svg" alt="WhatsApp"></a>
         <a class="social-link" href="https://www.instagram.com/fazgame_empire/" target="_blank" rel="noopener"><img src="https://api.iconify.design/simple-icons/instagram.svg" alt="Instagram"></a>
@@ -756,7 +987,7 @@
       </div>
     </div>
 
-    <!-- YOUR LOCAL FLOATING IMAGE - BIGGER WITH GLOW -->
+    <!-- YOUR LOCAL FLOATING IMAGE -->
     <div class="banner-visual">
       <div class="orb orb-1"></div>
       <div class="orb orb-2"></div>
@@ -773,9 +1004,10 @@
   <button id="cta-whatsapp" class="btn-primary">Chat on WhatsApp</button>
 </div>
 
-<!-- Fast Sales is hidden (display:none) -->
+<!-- Fast Sales is hidden -->
+<section id="fast-sales" style="display:none;"></section>
 
-<!-- Preorder PC Builds (with 3D hover) -->
+<!-- Preorder PC Builds -->
 <section id="hot">
   <h2 class="section-title">Preorder PC Builds</h2>
   <div class="section-subtitle">🖥 Custom Gaming PCs • Built On Demand</div>
@@ -790,7 +1022,7 @@
 
 <div class="installment-banner">💳 0% Interest Installment Available • SPayLater</div>
 
-<!-- Preorder Consoles (with 3D hover) -->
+<!-- Preorder Consoles -->
 <section id="preorder-console">
   <h2 class="section-title">Preorder Consoles</h2>
   <div class="section-subtitle">🎮 Used Units • Reserve Before Stock Arrival</div>
@@ -851,7 +1083,6 @@
   // ===== STOCK INVENTORY LOGIC =====
   let products = window.STOCK || [];
   
-  // ALL ICONS FROM CDN - no local images needed
   const icons = {
     console: 'https://api.iconify.design/mdi/console.svg',
     ps5: 'https://api.iconify.design/simple-icons/playstation.svg',
@@ -915,7 +1146,7 @@
   search.oninput = renderProducts;
   renderProducts();
 
-  // ===== 3D TILT EFFECT (ONLY FOR .hot-card) =====
+  // ===== 3D TILT EFFECT =====
   const tiltCards = document.querySelectorAll('.hot-card');
   tiltCards.forEach(card => {
     if ('ontouchstart' in window) return;
@@ -937,7 +1168,7 @@
     });
   });
 
-  // ===== PRELOADER, COUNTERS, LIGHTBOX =====
+  // ===== PRELOADER =====
   window.addEventListener("DOMContentLoaded", () => {
     let progress = 0;
     const bar = document.getElementById("loaderBar");
@@ -998,6 +1229,7 @@
     });
   }
 
+  // Smooth scroll
   document.querySelectorAll('[data-scroll]').forEach(chip => {
     chip.onclick = () => {
       const target = document.getElementById(chip.dataset.scroll);
@@ -1008,11 +1240,44 @@
     };
   });
 
+  // WhatsApp CTA
   document.getElementById("cta-whatsapp").addEventListener("click", function(e){
     e.preventDefault();
     const phone = "60163691936";
     const message = "Hi FAZGAME 👋 I would like to inquire about your products.";
     window.open("https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(message), '_blank');
+  });
+
+  // ===== THEME TOGGLE WITH LAMP ANIMATION =====
+  const themeToggle = document.getElementById('themeToggle');
+  const lamp = document.getElementById('lamp');
+  
+  // Check for saved theme preference
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light-mode');
+  }
+
+  themeToggle.addEventListener('click', () => {
+    // Add pulling animation
+    lamp.classList.add('pulling');
+    
+    // Toggle theme after short delay (for animation)
+    setTimeout(() => {
+      document.body.classList.toggle('light-mode');
+      
+      // Save preference
+      if (document.body.classList.contains('light-mode')) {
+        localStorage.setItem('theme', 'light');
+      } else {
+        localStorage.setItem('theme', 'dark');
+      }
+      
+      // Remove pulling animation
+      setTimeout(() => {
+        lamp.classList.remove('pulling');
+      }, 200);
+    }, 150);
   });
 </script>
 </body>
