@@ -92,7 +92,7 @@
     }
     a { text-decoration: none; color: inherit; }
 
-    /* ===== REDESIGNED GLASS GLOBE LAMP - FIXED BELOW HEADER ===== */
+    /* ===== PREMIUM 3D SWING LAMP - FIXED BELOW HEADER ===== */
     .theme-toggle {
       position: fixed;
       top: 80px;
@@ -101,153 +101,110 @@
       cursor: pointer;
       filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
       transition: filter 0.3s ease;
-      transform-style: preserve-3d;
-      perspective: 800px;
     }
 
     .theme-toggle:hover {
       filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4));
     }
 
-    .glass-lamp {
+    /* Scene with perspective */
+    .lamp-scene {
+      perspective: 1000px;
+    }
+
+    /* Lamp wrapper with swing animation */
+    .lamp-wrap {
+      transform-origin: top center;
+      animation: swing 4s ease-in-out infinite;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transform: rotateX(2deg) rotateY(-2deg);
-      transition: transform 0.2s ease;
     }
 
-    .theme-toggle:hover .glass-lamp {
-      transform: rotateX(1deg) rotateY(-1deg);
+    /* Pause swing on hover */
+    .theme-toggle:hover .lamp-wrap {
+      animation-play-state: paused;
+      transform: rotate(0deg) scale(1.02);
+      transition: 0.3s;
     }
 
-    .glass-lamp.pulling {
-      animation: pullLamp 0.3s ease;
-    }
-
-    @keyframes pullLamp {
-      0% { transform: rotateX(2deg) rotateY(-2deg) translateY(0); }
-      50% { transform: rotateX(4deg) rotateY(-2deg) translateY(4px); }
-      100% { transform: rotateX(2deg) rotateY(-2deg) translateY(0); }
-    }
-
-    /* Cord with decorative knot */
-    .lamp-cord {
+    /* Wire */
+    .wire {
       width: 2px;
-      height: 40px;
-      background: linear-gradient(to bottom, #9ca3af, #6b7280);
-      border-radius: 1px;
-      position: relative;
+      height: 60px;
+      background: linear-gradient(to bottom, #9ca3af, #4b5563);
+      margin-bottom: 2px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
-    .lamp-knot {
-      width: 6px;
-      height: 6px;
-      background: #8b5cf6;
-      border-radius: 50%;
-      position: absolute;
-      top: 30px;
-      left: -2px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .glass-lamp.pulling .lamp-cord {
+    /* Lamp head (3D style) */
+    .lamp-head {
+      width: 80px;
       height: 50px;
-    }
-
-    /* Metallic cap */
-    .lamp-cap {
-      width: 30px;
-      height: 12px;
-      background: linear-gradient(145deg, #e5e7eb, #d1d5db);
-      border-radius: 6px 6px 2px 2px;
-      margin-top: -2px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.3);
-      z-index: 2;
-    }
-
-    /* Glass globe */
-    .lamp-globe {
-      width: 40px;
-      height: 40px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(200,200,200,0.3));
-      border-radius: 50%;
+      background: linear-gradient(to bottom, #6b7280, #1f2937);
+      border-radius: 40px 40px 10px 10px;
+      position: relative;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
       display: flex;
       justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(2px);
-      border: 1px solid rgba(255,255,255,0.2);
-      box-shadow: 0 10px 20px -5px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.5);
-      margin-top: -4px;
-      position: relative;
-      z-index: 1;
+      align-items: flex-end;
+      margin-bottom: 5px;
     }
 
-    /* Inner bulb */
-    .lamp-bulb {
+    /* Bulb */
+    .bulb {
       width: 24px;
       height: 24px;
       background: radial-gradient(circle at 30% 30%, var(--lamp-color), color-mix(in srgb, var(--lamp-color) 50%, #333));
       border-radius: 50%;
       box-shadow: 0 0 25px var(--lamp-color);
+      margin-bottom: 8px;
       transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
-    body.light-mode .lamp-bulb {
+    body.light-mode .bulb {
       background: radial-gradient(circle at 30% 30%, var(--lamp-off-color), color-mix(in srgb, var(--lamp-off-color) 40%, #444));
       box-shadow: 0 0 15px var(--lamp-off-color);
     }
 
-    /* Downward light glow */
-    .lamp-glow {
-      width: 70px;
-      height: 60px;
-      background: radial-gradient(ellipse at top, var(--lamp-color) 0%, transparent 80%);
-      filter: blur(15px);
-      opacity: 0.6;
-      margin-top: -30px;
-      pointer-events: none;
-      z-index: 0;
+    /* Light beam */
+    .beam {
+      width: 180px;
+      height: 140px;
+      background: radial-gradient(ellipse at top, var(--lamp-color) 0%, transparent 70%);
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      filter: blur(8px);
+      opacity: 0.5;
+      margin-top: -20px;
+      transition: background 0.3s ease, opacity 0.3s ease;
     }
 
-    body.light-mode .lamp-glow {
-      background: radial-gradient(ellipse at top, var(--lamp-off-color) 0%, transparent 80%);
+    body.light-mode .beam {
+      background: radial-gradient(ellipse at top, var(--lamp-off-color) 0%, transparent 70%);
       opacity: 0.3;
     }
 
-    /* Pull chain */
-    .lamp-pull {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: -5px;
-      z-index: 3;
+    /* Floor glow */
+    .floor {
+      width: 200px;
+      height: 100px;
+      background: radial-gradient(circle, var(--lamp-color) 0%, transparent 70%);
+      filter: blur(20px);
+      opacity: 0.3;
+      margin-top: -60px;
+      transition: background 0.3s ease, opacity 0.3s ease;
     }
 
-    .pull-chain {
-      width: 1px;
-      height: 20px;
-      background: #9ca3af;
+    body.light-mode .floor {
+      background: radial-gradient(circle, var(--lamp-off-color) 0%, transparent 70%);
+      opacity: 0.15;
     }
 
-    .glass-lamp.pulling .pull-chain {
-      height: 28px;
-    }
-
-    .pull-ring {
-      width: 10px;
-      height: 10px;
-      border: 2px solid #e5e7eb;
-      border-radius: 50%;
-      background: transparent;
-      margin-top: 2px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease;
-    }
-
-    .glass-lamp.pulling .pull-ring {
-      transform: translateY(6px);
+    /* Swing animation */
+    @keyframes swing {
+      0% { transform: rotate(5deg); }
+      50% { transform: rotate(-5deg); }
+      100% { transform: rotate(5deg); }
     }
 
     /* ===== HEADER ===== */
@@ -884,7 +841,7 @@
       .hero-stats { gap: 24px; }
       .stat-item h3 { font-size: 28px; }
       .floating-image { max-width: 300px; }
-      .theme-toggle { top: 60px; right: 10px; transform: scale(0.9); }
+      .theme-toggle { top: 60px; right: 10px; transform: scale(0.8); }
     }
 
     #preloader { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; align-items: center; justify-content: center; transition: opacity 0.6s ease, background 0.3s ease; }
@@ -910,20 +867,16 @@
 
 <div id="imageModal"><img id="modalImg" src="" alt="Preview"></div>
 
-<!-- Redesigned Glass Globe Lamp - Fixed below header -->
+<!-- Premium 3D Swing Lamp - Fixed below header -->
 <div class="theme-toggle" id="themeToggle">
-  <div class="glass-lamp" id="lamp">
-    <div class="lamp-cord">
-      <div class="lamp-knot"></div>
-    </div>
-    <div class="lamp-cap"></div>
-    <div class="lamp-globe">
-      <div class="lamp-bulb"></div>
-    </div>
-    <div class="lamp-glow"></div>
-    <div class="lamp-pull">
-      <div class="pull-chain"></div>
-      <div class="pull-ring"></div>
+  <div class="lamp-scene">
+    <div class="lamp-wrap">
+      <div class="wire"></div>
+      <div class="lamp-head">
+        <div class="bulb"></div>
+      </div>
+      <div class="beam"></div>
+      <div class="floor"></div>
     </div>
   </div>
 </div>
@@ -1323,9 +1276,8 @@
     window.open("https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(message), '_blank');
   });
 
-  // ===== THEME TOGGLE WITH GLASS LAMP =====
+  // ===== THEME TOGGLE WITH PREMIUM SWING LAMP =====
   const themeToggle = document.getElementById('themeToggle');
-  const lamp = document.getElementById('lamp');
   
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
@@ -1333,21 +1285,24 @@
   }
 
   themeToggle.addEventListener('click', () => {
-    lamp.classList.add('pulling');
-    
+    // Add a quick pull effect (optional)
+    const lampWrap = document.querySelector('.lamp-wrap');
+    lampWrap.style.transition = 'transform 0.1s';
+    lampWrap.style.transform = 'rotate(0deg) scale(0.98)';
     setTimeout(() => {
-      document.body.classList.toggle('light-mode');
-      
-      if (document.body.classList.contains('light-mode')) {
-        localStorage.setItem('theme', 'light');
-      } else {
-        localStorage.setItem('theme', 'dark');
-      }
-      
-      setTimeout(() => {
-        lamp.classList.remove('pulling');
-      }, 200);
+      lampWrap.style.transform = '';
+      lampWrap.style.transition = '';
     }, 150);
+
+    // Toggle theme
+    document.body.classList.toggle('light-mode');
+    
+    // Save preference
+    if (document.body.classList.contains('light-mode')) {
+      localStorage.setItem('theme', 'light');
+    } else {
+      localStorage.setItem('theme', 'dark');
+    }
   });
 </script>
 </body>
