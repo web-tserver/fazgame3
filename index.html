@@ -1183,7 +1183,7 @@
 
     /* Light mode hover - no glow */
     body.light-mode .hot-card:hover {
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1); /* subtle shadow but no glow */
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     }
 
     .hot-card img {
@@ -1492,7 +1492,7 @@
       transition: transform 0.2s;
     }
 
-    /* Preloader */
+    /* ===== PRELOADER - RESTORED BOLD GAMING FONT ===== */
     #preloader {
       position: fixed;
       inset: 0;
@@ -1504,8 +1504,34 @@
       transition: opacity 0.6s ease, background 0.3s ease;
     }
     #preloader.hide { opacity: 0; pointer-events: none; }
-    .loader-bar-wrap { width: 200px; height: 4px; background: #222; margin-top: 20px; border-radius: 10px; overflow: hidden; }
-    .loader-bar { height: 100%; width: 0%; background: var(--accent); transition: width 0.1s, background 0.2s ease; }
+
+    #preloader .logo {
+      font-family: 'Clash Display', sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      letter-spacing: -0.5px;
+    }
+    #preloader .logo span:first-child {
+      color: #ffffff; /* white */
+    }
+    #preloader .logo span:last-child {
+      color: #ffd84d; /* yellow accent */
+    }
+
+    .loader-bar-wrap {
+      width: 200px;
+      height: 4px;
+      background: #222;
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .loader-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      transition: width 0.1s, background 0.2s ease;
+    }
 
     @media (max-width: 380px) {
       .hero-title { font-size: 32px; }
@@ -1524,7 +1550,7 @@
 
 <div id="preloader">
   <div style="text-align: center;">
-    <div class="logo" style="font-size: 28px;">
+    <div class="logo">
       <span>FAZ</span><span>GAME</span>
     </div>
     <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
@@ -1550,8 +1576,8 @@
 <header>
   <div class="header-inner">
     <div class="logo">
-      <!-- Replace with your actual logo file -->
-      <img src="images/logo.png" alt="FAZGAME" style="height: 40px; width: auto;">
+      <!-- Header logo with fallback if image not found -->
+      <img src="images/logo1.jpeg" alt="FAZGAME" style="height: 40px; width: auto;" onerror="this.onerror=null; this.src='https://placehold.co/300x300/222/ffd84d?text=FAZGAME';">
     </div>
     <div class="header-logos">
       <img src="https://api.iconify.design/simple-icons/playstation.svg" alt="PlayStation">
