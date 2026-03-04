@@ -1236,17 +1236,53 @@
     .hot-title {
       font-weight: 800;
       font-size: 18px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       color: #fff;
       text-shadow: 0 2px 8px rgba(0,0,0,0.8);
       letter-spacing: -0.3px;
     }
 
+    /* Price and button row */
+    .hot-price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    /* General .hot-desc (used for PC build descriptions) */
     .hot-desc {
       font-size: 14px;
       color: rgba(255,255,255,0.9);
       text-shadow: 0 1px 4px rgba(0,0,0,0.7);
       font-weight: 600;
+    }
+
+    /* Console price inside .hot-price-row - bold and yellow */
+    .hot-price-row .hot-desc {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .hot-card .reserve-btn {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 11px;
+      transition: var(--transition);
+      pointer-events: auto;
+      cursor: pointer;
+      z-index: 10;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .hot-card .reserve-btn:hover {
+      background: var(--accent-dark);
+      transform: scale(1.05);
     }
 
     @media (min-width: 768px) {
@@ -1259,6 +1295,10 @@
       .hot-desc {
         font-size: 16px;
       }
+      .hot-card .reserve-btn {
+        font-size: 13px;
+        padding: 8px 16px;
+      }
     }
 
     /* Optional subtle hover effect on text */
@@ -1266,9 +1306,13 @@
       transform: translateY(-2px);
       transition: transform 0.2s ease;
     }
-    .hot-card:hover .hot-desc {
+    .hot-card:hover .hot-desc,
+    .hot-card:hover .reserve-btn {
       transform: translateY(-2px);
       transition: transform 0.2s ease 0.05s;
+    }
+    .hot-card .reserve-btn {
+      transform: none;
     }
     /* --------------------------------- */
 
@@ -1307,37 +1351,6 @@
     }
     .hot-card:hover::before {
       opacity: 1;
-    }
-
-    /* ===== RESERVE BUTTON FOR CONSOLE CARDS ===== */
-    .hot-card .reserve-btn {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-weight: 800;
-      font-size: 11px;
-      transition: var(--transition);
-      display: inline-block;
-      margin-top: 8px;
-      pointer-events: auto; /* override parent's pointer-events: none */
-      cursor: pointer;
-      z-index: 10;
-      position: relative;
-    }
-
-    .hot-card .reserve-btn:hover {
-      background: var(--accent-dark);
-      transform: scale(1.05);
-    }
-
-    /* Ensure button appears above gradient */
-    .hot-card .hot-card-content {
-      pointer-events: none; /* keep text non-interactive */
-    }
-    .hot-card .hot-card-content .reserve-btn {
-      pointer-events: auto;
     }
 
     #fast-sales { display: none; }
@@ -1794,14 +1807,16 @@
   <h2 class="section-title">Preorder Consoles</h2>
   <div class="section-subtitle">🎮 Used Units • Reserve Before Stock Arrival</div>
   <div class="hot-grid">
-    <!-- console cards with RESERVE button -->
+    <!-- console cards with RESERVE button and bold yellow price -->
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/ps4-slim.jpg" alt="PS4 Slim" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS4+Slim';">
       <div class="hot-card-content">
         <div class="hot-title">PS4 Slim 500GB</div>
-        <div class="hot-desc">RM550</div>
-        <button class="reserve-btn" data-console="PS4 Slim 500GB">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM550</span>
+          <button class="reserve-btn" data-console="PS4 Slim 500GB">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1809,8 +1824,10 @@
       <img src="images/ps4-pro.jpg" alt="PS4 Pro" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS4+Pro';">
       <div class="hot-card-content">
         <div class="hot-title">PS4 Pro 1TB</div>
-        <div class="hot-desc">RM650</div>
-        <button class="reserve-btn" data-console="PS4 Pro 1TB">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM650</span>
+          <button class="reserve-btn" data-console="PS4 Pro 1TB">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1818,8 +1835,10 @@
       <img src="images/ps5-fat.jpg" alt="PS5 Fat" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Fat';">
       <div class="hot-card-content">
         <div class="hot-title">PS5 Fat Disc</div>
-        <div class="hot-desc">RM1450</div>
-        <button class="reserve-btn" data-console="PS5 Fat Disc">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM1450</span>
+          <button class="reserve-btn" data-console="PS5 Fat Disc">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1827,8 +1846,10 @@
       <img src="images/ps5-slim.jpg" alt="PS5 Slim" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Slim';">
       <div class="hot-card-content">
         <div class="hot-title">PS5 Slim Disc</div>
-        <div class="hot-desc">RM1650</div>
-        <button class="reserve-btn" data-console="PS5 Slim Disc">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM1650</span>
+          <button class="reserve-btn" data-console="PS5 Slim Disc">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1836,8 +1857,10 @@
       <img src="images/ps5-pro.jpg" alt="PS5 Pro" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Pro';">
       <div class="hot-card-content">
         <div class="hot-title">PS5 Pro Digital</div>
-        <div class="hot-desc">RM2750</div>
-        <button class="reserve-btn" data-console="PS5 Pro Digital">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM2750</span>
+          <button class="reserve-btn" data-console="PS5 Pro Digital">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1845,8 +1868,10 @@
       <img src="images/switch-lite.jpg" alt="Switch Lite" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Switch+Lite';">
       <div class="hot-card-content">
         <div class="hot-title">Switch Lite</div>
-        <div class="hot-desc">RM400</div>
-        <button class="reserve-btn" data-console="Switch Lite">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM400</span>
+          <button class="reserve-btn" data-console="Switch Lite">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1854,8 +1879,10 @@
       <img src="images/switch-oled-white.jpg" alt="Switch OLED White" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=OLED+White';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED White</div>
-        <div class="hot-desc">RM750</div>
-        <button class="reserve-btn" data-console="Switch OLED White">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM750</span>
+          <button class="reserve-btn" data-console="Switch OLED White">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1863,8 +1890,10 @@
       <img src="images/switch-oled-neon.jpg" alt="Switch OLED Neon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=OLED+Neon';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Neon</div>
-        <div class="hot-desc">RM750</div>
-        <button class="reserve-btn" data-console="Switch OLED Neon">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM750</span>
+          <button class="reserve-btn" data-console="Switch OLED Neon">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1872,8 +1901,10 @@
       <img src="images/switch-zelda.jpg" alt="Switch OLED Zelda" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Zelda+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Zelda</div>
-        <div class="hot-desc">RM850</div>
-        <button class="reserve-btn" data-console="Switch OLED Zelda">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM850</span>
+          <button class="reserve-btn" data-console="Switch OLED Zelda">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1881,8 +1912,10 @@
       <img src="images/switch-splatoon.jpg" alt="Switch OLED Splatoon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Splatoon+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Splatoon</div>
-        <div class="hot-desc">RM850</div>
-        <button class="reserve-btn" data-console="Switch OLED Splatoon">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM850</span>
+          <button class="reserve-btn" data-console="Switch OLED Splatoon">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1890,8 +1923,10 @@
       <img src="images/switch-mario.jpg" alt="Switch OLED Mario" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Mario+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Mario</div>
-        <div class="hot-desc">RM850</div>
-        <button class="reserve-btn" data-console="Switch OLED Mario">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM850</span>
+          <button class="reserve-btn" data-console="Switch OLED Mario">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1899,8 +1934,10 @@
       <img src="images/switch-pokemon.jpg" alt="Switch OLED Pokemon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Pokemon+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Pokemon</div>
-        <div class="hot-desc">RM850</div>
-        <button class="reserve-btn" data-console="Switch OLED Pokemon">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM850</span>
+          <button class="reserve-btn" data-console="Switch OLED Pokemon">RESERVE</button>
+        </div>
       </div>
     </div>
     <div class="hot-card">
@@ -1908,8 +1945,10 @@
       <img src="images/switch-2.jpg" alt="Switch 2" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Switch+2';">
       <div class="hot-card-content">
         <div class="hot-title">Switch 2 Edition</div>
-        <div class="hot-desc">RM1700</div>
-        <button class="reserve-btn" data-console="Switch 2 Edition">RESERVE</button>
+        <div class="hot-price-row">
+          <span class="hot-desc">RM1700</span>
+          <button class="reserve-btn" data-console="Switch 2 Edition">RESERVE</button>
+        </div>
       </div>
     </div>
   </div>
