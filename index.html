@@ -1678,11 +1678,12 @@
       box-shadow: 0 20px 30px -10px rgba(255,216,77,0.5);
     }
 
-    /* ===== 3D COVERFLOW SWIPER GALLERY ===== */
+    /* ===== 3D COVERFLOW SWIPER GALLERY (FIXED SIZE & OVERFLOW) ===== */
     #gallery .swiper {
       width: 100%;
-      padding: 40px 0 70px; /* Space for pagination and depth */
-      overflow: visible; /* Allows the 3D effect to be seen */
+      padding: 40px 30px 70px; /* Added horizontal padding to give room for 3D effect */
+      overflow: visible; /* Ensures the 3D effect isn't clipped */
+      box-sizing: border-box;
     }
 
     #gallery .swiper-slide {
@@ -1761,6 +1762,9 @@
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
+      #gallery .swiper {
+        padding: 20px 20px 50px; /* Smaller horizontal padding on mobile */
+      }
       #gallery .swiper-slide {
         width: 250px;
         height: 330px;
@@ -1769,7 +1773,7 @@
 
     @media (max-width: 480px) {
       #gallery .swiper {
-        padding: 20px 0 50px;
+        padding: 20px 15px 40px;
       }
       #gallery .swiper-slide {
         width: 200px;
@@ -2316,7 +2320,7 @@
   <h2 class="section-title">📸 Gallery</h2>
   <div class="section-subtitle">Immersive 3D • Gaming setups, events, and behind the scenes</div>
 
-  <!-- Swiper Container -->
+  <!-- Swiper Container (padding added in CSS) -->
   <div class="swiper mySwiper">
     <div class="swiper-wrapper">
       <!-- Slide 1 - g1.webp -->
