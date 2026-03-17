@@ -49,6 +49,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,700,600&display=swap" rel="stylesheet">
 
+  <!-- Swiper CSS (for 3D Coverflow) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
   <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAoUlEQVRYhe2VMQ6AIAxF6UlcPIk7J3F1ceEQjQkFWmqLFv9LJiAtvw9KAaABWwGYA5gDmIMsAGMM3vvgvYeiKELvPcYYRAgQkYcQQoimeMk0TWSMwTnHOkop0jRNhIhE0zSst+/7RACklKx3mqaJzDknAqC1Zr0b55wIgNaa9W6ccyIArTXr3TjnRAC01qx345wTAdBas96Nc04E4M9z+gI92RwWGG7S7AAAAABJRU5ErkJggg==">
 
   <style>
@@ -63,7 +66,8 @@
     .back-to-top,
     .trade-btn,
     .reserve-btn,
-    .product-buy {
+    .product-buy,
+    .swiper-slide {
       cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ffd84d" d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>') 12 0, pointer;
     }
 
@@ -78,7 +82,8 @@
       .back-to-top,
       .trade-btn,
       .reserve-btn,
-      .product-buy {
+      .product-buy,
+      .swiper-slide {
         cursor: pointer;
       }
     }
@@ -146,6 +151,7 @@
 
     body {
       transition: var(--theme-transition);
+      overflow-x: hidden;
     }
     body * {
       transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.2s ease;
@@ -608,7 +614,8 @@
     .reserve-btn,
     .product-buy,
     .back-to-top,
-    .trade-btn {
+    .trade-btn,
+    .swiper-slide {
       min-width: 44px;
       min-height: 44px;
       display: inline-flex;
@@ -624,7 +631,8 @@
     .reserve-btn:active,
     .product-buy:active,
     .back-to-top:active,
-    .trade-btn:active {
+    .trade-btn:active,
+    .swiper-slide:active {
       transform: scale(0.97);
     }
 
@@ -639,8 +647,8 @@
     /* ===== BUTTONS AS COMPACT AS BADGES ===== */
     .reserve-btn,
     .product-buy {
-      padding: 3px 8px;        /* matching badge padding */
-      border-radius: 8px;
+      padding: 3px 8px;
+      border-radius: 8px;        /* rectangle */
       font-weight: 800;
       font-size: 11px;
     }
@@ -868,11 +876,12 @@
       50% { opacity: 0.6; transform: scale(1.2); }
     }
 
+    /* ===== REDUCED GLOW ON FLOATING IMAGE ===== */
     .floating-image {
       width: 100%;
       max-width: 400px;
-      filter: drop-shadow(0 0 20px rgba(255,216,77,0.6)) drop-shadow(0 0 40px rgba(255,216,77,0.3));
-      animation: levitate 6s ease-in-out infinite, glowPulse 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px rgba(255,216,77,0.4)) drop-shadow(0 0 20px rgba(255,216,77,0.2));
+      animation: levitate 6s ease-in-out infinite, glowPulse 4s ease-in-out infinite;
       transform-origin: center;
       position: relative;
       z-index: 5;
@@ -883,12 +892,12 @@
     @media (min-width: 768px) {
       .floating-image {
         max-width: 650px;
-        filter: drop-shadow(0 0 30px rgba(255,216,77,0.8)) drop-shadow(0 0 60px rgba(255,216,77,0.4));
+        filter: drop-shadow(0 0 15px rgba(255,216,77,0.5)) drop-shadow(0 0 30px rgba(255,216,77,0.25));
       }
     }
 
     body.light-mode .floating-image {
-      filter: drop-shadow(0 0 20px rgba(234,179,8,0.3)) drop-shadow(0 0 40px rgba(234,179,8,0.15));
+      filter: drop-shadow(0 0 10px rgba(234,179,8,0.2)) drop-shadow(0 0 20px rgba(234,179,8,0.1));
     }
 
     @keyframes levitate {
@@ -897,20 +906,19 @@
       100% { transform: translateY(0) rotate(0deg); }
     }
     @keyframes glowPulse {
-      0%, 100% { filter: drop-shadow(0 0 20px rgba(255,216,77,0.6)) drop-shadow(0 0 40px rgba(255,216,77,0.3)); }
-      50% { filter: drop-shadow(0 0 30px rgba(255,216,77,0.8)) drop-shadow(0 0 60px rgba(255,216,77,0.5)); }
+      0%, 100% { filter: drop-shadow(0 0 10px rgba(255,216,77,0.4)) drop-shadow(0 0 20px rgba(255,216,77,0.2)); }
+      50% { filter: drop-shadow(0 0 15px rgba(255,216,77,0.6)) drop-shadow(0 0 30px rgba(255,216,77,0.3)); }
     }
 
-    /* ===== FULL-WIDTH WHATSAPP BUTTON - NO ROUND CORNERS ===== */
+    /* ===== FULL-WIDTH WHATSAPP BUTTON - NO GAPS ===== */
     .sticky-cta {
       position: sticky;
       top: 70px;
       z-index: 900;
       background: transparent;
-      padding: 12px 16px;
+      padding: 12px 0;
       text-align: center;
       width: 100%;
-      max-width: none;
       margin: 0;
     }
 
@@ -926,6 +934,7 @@
       font-size: 15px;
       box-shadow: 0 10px 30px -10px rgba(255,216,77,0.3);
       border: 1px solid rgba(255,216,77,0.3);
+      max-width: none;
     }
 
     @media (min-width: 768px) {
@@ -1193,6 +1202,7 @@
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
+      justify-content: space-between; /* price left, button right */
     }
 
     @media (min-width: 768px) {
@@ -1219,7 +1229,7 @@
       background: var(--accent);
       color: #000;
       border: none;
-      border-radius: 8px;
+      border-radius: 8px;        /* rectangle */
       font-weight: 800;
       font-size: 11px;
       display: inline-block;
@@ -1338,7 +1348,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      padding: 16px;
+      padding: 12px; /* reduced from 16px */
       background: linear-gradient(transparent, rgba(0,0,0,0.5) 60%);
       z-index: 4;
       transform: translateZ(20px);
@@ -1348,8 +1358,8 @@
 
     .hot-title {
       font-weight: 800;
-      font-size: 18px;
-      margin-bottom: 8px;
+      font-size: 16px; /* reduced from 18px */
+      margin-bottom: 6px;
       color: #fff;
       text-shadow: 0 2px 8px rgba(0,0,0,0.8);
       letter-spacing: -0.3px;
@@ -1358,12 +1368,13 @@
     .hot-price-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 8px;
+      flex-wrap: wrap;
+      justify-content: space-between; /* price left, button right */
     }
 
     .hot-desc {
-      font-size: 14px;
+      font-size: 12px; /* reduced from 14px */
       color: rgba(255,255,255,0.9);
       text-shadow: 0 1px 4px rgba(0,0,0,0.7);
       font-weight: 600;
@@ -1378,7 +1389,7 @@
       background: var(--accent);
       color: #000;
       border: none;
-      border-radius: 8px;
+      border-radius: 8px;        /* rectangle */
       font-weight: 800;
       font-size: 11px;
       pointer-events: auto;
@@ -1386,7 +1397,8 @@
       z-index: 10;
       position: relative;
       white-space: nowrap;
-      padding: 3px 8px;  /* matching badge */
+      padding: 3px 8px;
+      min-height: 32px; /* ensure it's still tappable */
     }
 
     .hot-card .reserve-btn:hover {
@@ -1396,17 +1408,17 @@
 
     @media (min-width: 768px) {
       .hot-card-content {
-        padding: 24px;
+        padding: 18px; /* slightly more on desktop, but still smaller than original */
       }
       .hot-title {
-        font-size: 22px;
+        font-size: 18px; /* slightly larger on desktop */
       }
       .hot-desc {
-        font-size: 16px;
+        font-size: 14px;
       }
       .hot-card .reserve-btn {
-        font-size: 13px;
-        padding: 4px 12px; /* slightly larger on desktop but still compact */
+        font-size: 12px;
+        padding: 4px 10px;
       }
     }
 
@@ -1457,6 +1469,32 @@
     }
     .hot-card:hover::before {
       opacity: 1;
+    }
+
+    /* ===== OPTIMIZATIONS FOR MOBILE ===== */
+    /* Disable metallic shine animation on touch devices (phones/tablets) */
+    @media (hover: none) and (pointer: coarse) {
+      .hot-card::after {
+        display: none !important;
+      }
+    }
+
+    /* Lamp animation now plays on mobile (removed pause) */
+
+    /* Faster reveal animation on mobile */
+    @media (max-width: 768px) {
+      .reveal {
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        transform: translateY(15px);
+      }
+    }
+
+    /* Ensure buttons stay bold on mobile */
+    @media (max-width: 768px) {
+      .reserve-btn,
+      .product-buy {
+        font-weight: 800 !important;
+      }
     }
 
     #fast-sales { display: none; }
@@ -1535,7 +1573,7 @@
     @media (min-width: 600px) {
       .hot-grid {
         gap: 20px;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* reduced from 220px */
       }
     }
 
@@ -1638,6 +1676,105 @@
       background: var(--accent-dark);
       transform: translateY(-2px);
       box-shadow: 0 20px 30px -10px rgba(255,216,77,0.5);
+    }
+
+    /* ===== 3D COVERFLOW SWIPER GALLERY ===== */
+    #gallery .swiper {
+      width: 100%;
+      padding: 40px 0 70px; /* Space for pagination and depth */
+      overflow: visible; /* Allows the 3D effect to be seen */
+    }
+
+    #gallery .swiper-slide {
+      background-position: center;
+      background-size: cover;
+      width: 300px; /* Base width for slides */
+      height: 400px; /* Base height */
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px -5px rgba(0,0,0,0.3);
+      border: 2px solid rgba(255,255,255,0.1);
+      transition: border-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    #gallery .swiper-slide-active {
+      border-color: var(--accent); /* Highlight active slide with your accent color */
+    }
+
+    #gallery .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Slide captions */
+    #gallery .slide-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      text-align: center;
+      backdrop-filter: blur(2px);
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+
+    #gallery .swiper-slide-active .slide-caption {
+      transform: translateY(0); /* Caption slides up only on active slide */
+    }
+
+    /* Pagination bullets */
+    #gallery .swiper-pagination-bullet {
+      background: var(--text);
+      opacity: 0.5;
+      transition: all 0.3s ease;
+    }
+
+    #gallery .swiper-pagination-bullet-active {
+      background: var(--accent);
+      opacity: 1;
+      transform: scale(1.2);
+    }
+
+    /* Navigation buttons (optional) */
+    #gallery .swiper-button-next,
+    #gallery .swiper-button-prev {
+      color: var(--accent);
+      background: rgba(0,0,0,0.3);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      backdrop-filter: blur(4px);
+    }
+
+    #gallery .swiper-button-next:after,
+    #gallery .swiper-button-prev:after {
+      font-size: 18px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      #gallery .swiper-slide {
+        width: 250px;
+        height: 330px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #gallery .swiper {
+        padding: 20px 0 50px;
+      }
+      #gallery .swiper-slide {
+        width: 200px;
+        height: 260px;
+      }
     }
 
     /* ===== PAYMENT SECTION ===== */
@@ -1903,13 +2040,14 @@
       <h1 class="hero-title">LEVEL UP<br>YOUR <span>GAMING</span></h1>
       <p class="hero-desc">Pre‑order the latest consoles, custom PCs, and exclusive accessories with 0% installment.</p>
       
+      <!-- Updated service chips -->
       <div class="service-chips">
         <span class="chip primary" data-scroll="hot">Custom PC Build</span>
-        <span class="chip" data-scroll="hot">PC Parts</span>
+        <span class="chip" data-scroll="preorder-console">Preorder</span>
         <span class="chip" data-scroll="stock">Consoles</span>
         <span class="chip" data-scroll="stock">Games</span>
-        <!-- Trade-in pill -->
         <span class="chip" data-scroll="trade-section">Trade-in</span>
+        <span class="chip" data-scroll="gallery">Gallery</span>
       </div>
 
       <div class="hero-stats">
@@ -1948,7 +2086,7 @@
   </div>
 </div>
 
-<!-- Sticky CTA -->
+<!-- Sticky CTA - full width, no gaps -->
 <div class="sticky-cta">
   <button id="cta-whatsapp" class="btn-primary">Chat on WhatsApp</button>
 </div>
@@ -1963,7 +2101,7 @@
   <div class="hot-grid">
     <div class="hot-card">
       <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/pc1000.jpg" alt="PC Budget RM1000" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PC+RM1000';">
+      <img src="images/pc1000.webp" alt="PC Budget RM1000" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PC+RM1000';">
       <div class="hot-card-content">
         <div class="hot-title">PC Budget RM1,000+</div>
         <div class="hot-desc">Entry Gaming</div>
@@ -1971,7 +2109,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/pc2000.jpg" alt="PC Budget RM2000" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PC+RM2000';">
+      <img src="images/pc2000.webp" alt="PC Budget RM2000" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PC+RM2000';">
       <div class="hot-card-content">
         <div class="hot-title">PC Budget RM2,000+</div>
         <div class="hot-desc">Entry Gaming</div>
@@ -1979,7 +2117,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/pc3000.jpg" alt="PC Budget RM3000" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PC+RM3000';">
+      <img src="images/pc3000.webp" alt="PC Budget RM3000" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PC+RM3000';">
       <div class="hot-card-content">
         <div class="hot-title">PC Budget RM3,000+</div>
         <div class="hot-desc">Balanced Build</div>
@@ -1987,7 +2125,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/pc3500.jpg" alt="PC Budget RM3500" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PC+RM3500';">
+      <img src="images/pc3500.webp" alt="PC Budget RM3500" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PC+RM3500';">
       <div class="hot-card-content">
         <div class="hot-title">PC Budget RM3,500+</div>
         <div class="hot-desc">High Performance</div>
@@ -1995,7 +2133,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/custompc.jpg" alt="Custom PC" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Custom+PC';">
+      <img src="images/custompc.webp" alt="Custom PC" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Custom+PC';">
       <div class="hot-card-content">
         <div class="hot-title">Custom PC</div>
         <div class="hot-desc">Free Setup</div>
@@ -2014,7 +2152,7 @@
     <!-- Console cards with RESERVE button -->
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/ps4-slim.jpg" alt="PS4 Slim" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS4+Slim';">
+      <img src="images/ps4-slim.webp" alt="PS4 Slim" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS4+Slim';">
       <div class="hot-card-content">
         <div class="hot-title">PS4 Slim 500GB</div>
         <div class="hot-price-row">
@@ -2025,7 +2163,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/ps4-pro.jpg" alt="PS4 Pro" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS4+Pro';">
+      <img src="images/ps4-pro.webp" alt="PS4 Pro" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS4+Pro';">
       <div class="hot-card-content">
         <div class="hot-title">PS4 Pro 1TB</div>
         <div class="hot-price-row">
@@ -2036,7 +2174,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/ps5-fat.jpg" alt="PS5 Fat" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Fat';">
+      <img src="images/ps5-fat.webp" alt="PS5 Fat" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Fat';">
       <div class="hot-card-content">
         <div class="hot-title">PS5 Fat Disc</div>
         <div class="hot-price-row">
@@ -2047,7 +2185,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/ps5-slim.jpg" alt="PS5 Slim" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Slim';">
+      <img src="images/ps5-slim.webp" alt="PS5 Slim" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Slim';">
       <div class="hot-card-content">
         <div class="hot-title">PS5 Slim Disc</div>
         <div class="hot-price-row">
@@ -2058,7 +2196,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/ps5-pro.jpg" alt="PS5 Pro" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Pro';">
+      <img src="images/ps5-pro.webp" alt="PS5 Pro" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Pro';">
       <div class="hot-card-content">
         <div class="hot-title">PS5 Pro Digital</div>
         <div class="hot-price-row">
@@ -2069,7 +2207,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/switch-lite.jpg" alt="Switch Lite" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Switch+Lite';">
+      <img src="images/switch-lite.webp" alt="Switch Lite" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Switch+Lite';">
       <div class="hot-card-content">
         <div class="hot-title">Switch Lite</div>
         <div class="hot-price-row">
@@ -2080,7 +2218,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/switch-oled-white.jpg" alt="Switch OLED White" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=OLED+White';">
+      <img src="images/switch-oled-white.webp" alt="Switch OLED White" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=OLED+White';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED White</div>
         <div class="hot-price-row">
@@ -2091,7 +2229,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/switch-oled-neon.jpg" alt="Switch OLED Neon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=OLED+Neon';">
+      <img src="images/switch-oled-neon.webp" alt="Switch OLED Neon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=OLED+Neon';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Neon</div>
         <div class="hot-price-row">
@@ -2102,7 +2240,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/switch-zelda.jpg" alt="Switch OLED Zelda" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Zelda+OLED';">
+      <img src="images/switch-zelda.webp" alt="Switch OLED Zelda" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Zelda+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Zelda</div>
         <div class="hot-price-row">
@@ -2113,7 +2251,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/switch-splatoon.jpg" alt="Switch OLED Splatoon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Splatoon+OLED';">
+      <img src="images/switch-splatoon.webp" alt="Switch OLED Splatoon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Splatoon+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Splatoon</div>
         <div class="hot-price-row">
@@ -2124,7 +2262,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/switch-mario.jpg" alt="Switch OLED Mario" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Mario+OLED';">
+      <img src="images/switch-mario.webp" alt="Switch OLED Mario" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Mario+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Mario</div>
         <div class="hot-price-row">
@@ -2135,7 +2273,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/switch-pokemon.jpg" alt="Switch OLED Pokemon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Pokemon+OLED';">
+      <img src="images/switch-pokemon.webp" alt="Switch OLED Pokemon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Pokemon+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Pokemon</div>
         <div class="hot-price-row">
@@ -2146,7 +2284,7 @@
     </div>
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
-      <img src="images/switch-2.jpg" alt="Switch 2" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Switch+2';">
+      <img src="images/switch-2.webp" alt="Switch 2" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Switch+2';">
       <div class="hot-card-content">
         <div class="hot-title">Switch 2 Edition</div>
         <div class="hot-price-row">
@@ -2173,6 +2311,55 @@
   <button class="trade-btn" id="tradeBtn">Inquire About Trade‑In</button>
 </section>
 
+<!-- ===== 3D COVERFLOW GALLERY WITH LOCAL IMAGES (g1.webp ... g6.webp) ===== -->
+<section id="gallery" class="reveal" style="padding: 40px 16px; max-width: 1200px; margin: 0 auto;">
+  <h2 class="section-title">📸 Gallery</h2>
+  <div class="section-subtitle">Immersive 3D • Gaming setups, events, and behind the scenes</div>
+
+  <!-- Swiper Container -->
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      <!-- Slide 1 - g1.webp -->
+      <div class="swiper-slide">
+        <img src="images/g1.webp" alt="Gallery Image 1" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/600x400/222/ffd84d?text=Image+1';">
+        <div class="slide-caption">Gaming Setup</div>
+      </div>
+      <!-- Slide 2 - g2.webp -->
+      <div class="swiper-slide">
+        <img src="images/g2.webp" alt="Gallery Image 2" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/600x400/222/ffd84d?text=Image+2';">
+        <div class="slide-caption">Controller</div>
+      </div>
+      <!-- Slide 3 - g3.webp -->
+      <div class="swiper-slide">
+        <img src="images/g3.webp" alt="Gallery Image 3" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/600x400/222/ffd84d?text=Image+3';">
+        <div class="slide-caption">Custom PC</div>
+      </div>
+      <!-- Slide 4 - g4.webp -->
+      <div class="swiper-slide">
+        <img src="images/g4.webp" alt="Gallery Image 4" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/600x400/222/ffd84d?text=Image+4';">
+        <div class="slide-caption">PlayStation</div>
+      </div>
+      <!-- Slide 5 - g5.webp -->
+      <div class="swiper-slide">
+        <img src="images/g5.webp" alt="Gallery Image 5" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/600x800/222/ffd84d?text=Image+5';">
+        <div class="slide-caption">Nintendo Switch</div>
+      </div>
+      <!-- Slide 6 - g6.webp -->
+      <div class="swiper-slide">
+        <img src="images/g6.webp" alt="Gallery Image 6" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/600x400/222/ffd84d?text=Image+6';">
+        <div class="slide-caption">Xbox</div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+
+    <!-- Pagination Dots -->
+    <div class="swiper-pagination"></div>
+  </div>
+</section>
+
 <!-- Payment Methods -->
 <section id="payment" class="reveal">
   <h2 class="section-title" style="text-align:center">Payment Methods</h2>
@@ -2189,6 +2376,9 @@
 
 <!-- Load stock.js -->
 <script src="stock.js"></script>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <script>
   // ===== STOCK INVENTORY LOGIC =====
@@ -2289,8 +2479,9 @@
     window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`, '_blank');
   });
 
-  // ===== EVENT DELEGATION FOR CHECK AND RESERVE BUTTONS =====
+  // ===== EVENT DELEGATION FOR CHECK, RESERVE, AND LIGHTBOX =====
   document.addEventListener('click', function(e) {
+    // 1. product-buy (WhatsApp inquiry)
     const button = e.target.closest('.product-buy');
     if (button) {
       const productName = button.getAttribute('data-product-name');
@@ -2299,15 +2490,14 @@
         const message = `Hi FAZGAME 👋 I would like to inquire about ${productName}.`;
         window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`, '_blank');
       }
+      return;
     }
 
+    // 2. reserve-btn (WhatsApp reservation)
     const reserveBtn = e.target.closest('.reserve-btn');
     if (reserveBtn) {
-      // Animate the button
       reserveBtn.classList.add('clicked');
-      setTimeout(() => {
-        reserveBtn.classList.remove('clicked');
-      }, 300);
+      setTimeout(() => reserveBtn.classList.remove('clicked'), 300);
 
       const consoleName = reserveBtn.getAttribute('data-console');
       if (consoleName) {
@@ -2315,10 +2505,27 @@
         const message = `Hi FAZGAME 👋 I would like to reserve ${consoleName}.`;
         window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`, '_blank');
       }
+      return;
+    }
+
+    // 3. hot-card / product-card lightbox (exclude stock & preorder-console)
+    const card = e.target.closest('.hot-card') || e.target.closest('.product-card');
+    if (card) {
+      const isExcluded = card.closest('#stock') || card.closest('#preorder-console');
+      if (!isExcluded) {
+        const img = card.querySelector('img');
+        if (img) {
+          const modal = document.getElementById('imageModal');
+          const modalImg = document.getElementById('modalImg');
+          modalImg.src = img.src;
+          modal.classList.add('show');
+          document.body.style.overflow = 'hidden';
+        }
+      }
     }
   });
 
-  // ===== 3D TILT EFFECT =====
+  // ===== 3D TILT EFFECT FOR HOT CARDS =====
   const tiltCards = document.querySelectorAll('.hot-card');
   tiltCards.forEach(card => {
     if ('ontouchstart' in window) return;
@@ -2339,6 +2546,59 @@
     });
   });
 
+  // ===== 3D COVERFLOW GALLERY INITIALIZATION WITH LIGHTBOX ON CLICK =====
+  if (document.querySelector('.mySwiper')) {
+    const swiper = new Swiper(".mySwiper", {
+      effect: "coverflow",
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: "auto",
+      coverflowEffect: {
+        rotate: 50,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      speed: 800,
+    });
+
+    // Add click handler for all slides to open lightbox
+    document.querySelectorAll('.swiper-slide').forEach(slide => {
+      slide.addEventListener('click', (e) => {
+        // Prevent click if interacting with navigation buttons
+        if (e.target.closest('.swiper-button-next') || e.target.closest('.swiper-button-prev')) return;
+
+        const img = slide.querySelector('img');
+        if (img) {
+          const modal = document.getElementById('imageModal');
+          const modalImg = document.getElementById('modalImg');
+          modalImg.src = img.src;
+          modal.classList.add('show');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    // Pause autoplay on hover
+    const swiperContainer = document.querySelector('.mySwiper');
+    swiperContainer.addEventListener('mouseenter', () => swiper.autoplay.stop());
+    swiperContainer.addEventListener('mouseleave', () => swiper.autoplay.start());
+  }
+
   // ===== PRELOADER =====
   window.addEventListener("DOMContentLoaded", () => {
     let progress = 0;
@@ -2356,23 +2616,8 @@
       }
     }, 40);
 
-    // Lightbox - only for PC build cards
+    // Lightbox close handler
     const modal = document.getElementById("imageModal");
-    const modalImg = document.getElementById("modalImg");
-    document.addEventListener("click", (e) => {
-      const card = e.target.closest(".hot-card") || e.target.closest(".product-card");
-      if (card) {
-        const isExcluded = card.closest('#stock') || card.closest('#preorder-console');
-        if (!isExcluded) {
-          const img = card.querySelector("img");
-          if (img) {
-            modalImg.src = img.src;
-            modal.classList.add("show");
-            document.body.style.overflow = "hidden";
-          }
-        }
-      }
-    });
     modal.onclick = () => {
       modal.classList.remove("show");
       document.body.style.overflow = "auto";
@@ -2425,7 +2670,6 @@
   const themeToggle = document.getElementById('themeToggle');
   const savedTheme = localStorage.getItem('theme');
   
-  // Set initial theme based on saved preference or system preference
   if (savedTheme) {
     if (savedTheme === 'light') {
       document.body.classList.add('light-mode');
@@ -2437,7 +2681,6 @@
     }
   }
 
-  // Listen for system theme changes – only apply if user hasn't manually overridden
   window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
     if (!localStorage.getItem('theme')) {
       if (e.matches) {
@@ -2449,7 +2692,6 @@
   });
 
   themeToggle.addEventListener('click', () => {
-    // Add a quick pull effect
     const lampWrap = document.querySelector('.lamp-wrap');
     lampWrap.style.transition = 'transform 0.1s';
     lampWrap.style.transform = 'rotate(0deg) scale(0.98)';
@@ -2458,10 +2700,8 @@
       lampWrap.style.transition = '';
     }, 150);
 
-    // Toggle theme
     document.body.classList.toggle('light-mode');
     
-    // Save preference
     if (document.body.classList.contains('light-mode')) {
       localStorage.setItem('theme', 'light');
     } else {
