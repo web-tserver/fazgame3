@@ -109,8 +109,6 @@
       --badge-used-text: #fff;
       --badge-new-bg: rgba(255,216,77,0.45);
       --badge-new-text: #000;
-      --badge-scarcity-bg: #ff3b3b;
-      --badge-scarcity-text: #fff;
       --transition: 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
       --lamp-color: #ffd84d;
       --lamp-off-color: #94a3b8;
@@ -141,8 +139,6 @@
       --badge-used-text: #ffffff;
       --badge-new-bg: #eab308;
       --badge-new-text: #ffffff;
-      --badge-scarcity-bg: #dc2626;
-      --badge-scarcity-text: #ffffff;
       --lamp-color: #eab308;
       --lamp-off-color: #94a3b8;
       --header-bg: rgba(255, 255, 255, 0.9);
@@ -1372,21 +1368,47 @@
       opacity: 1;
     }
 
-    /* ===== PREORDER CONSOLE GRID – RESPONSIVE ===== */
+    /* ===== GRID LAYOUTS ===== */
+    /* Default grid for all .hot-grid (used by both PC and consoles) */
     .hot-grid {
       display: grid;
       gap: 14px;
-      grid-template-columns: repeat(3, 1fr); /* 3 columns on mobile by default */
+      grid-template-columns: repeat(3, 1fr); /* 3 columns base */
       margin: 0 auto;
     }
+    /* PC builds section (id="hot") – make cards bigger: fixed 3 columns with larger min width */
+    #hot .hot-grid {
+      grid-template-columns: repeat(3, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    /* Consoles section (id="preorder-console") – text auto-resize and smaller button */
+    #preorder-console .hot-card .hot-title {
+      font-size: clamp(12px, 4vw, 16px);
+      white-space: normal;
+      word-break: break-word;
+    }
+    #preorder-console .hot-card .hot-desc {
+      font-size: clamp(10px, 3vw, 12px);
+    }
+    #preorder-console .hot-card .reserve-btn {
+      font-size: 10px;
+      padding: 2px 6px;
+      min-height: 32px;
+    }
+    /* For larger screens, allow auto-fill for consoles */
     @media (min-width: 600px) {
       .hot-grid {
         gap: 20px;
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       }
+      /* PC builds keep fixed 3 columns */
+      #hot .hot-grid {
+        grid-template-columns: repeat(3, minmax(240px, 1fr));
+      }
     }
     @media (min-width: 1200px) {
-      .hot-grid {
+      /* Consoles get 6 columns on large screens */
+      #preorder-console .hot-grid {
         grid-template-columns: repeat(6, minmax(140px, 1fr));
       }
     }
@@ -1561,42 +1583,6 @@
       background: var(--accent-dark);
       transform: translateY(-2px);
       box-shadow: 0 20px 30px -10px rgba(255,216,77,0.5);
-    }
-
-    /* ===== RECENTLY VIEWED SECTION ===== */
-    #recently-viewed {
-      padding: 40px 16px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .recent-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-    }
-    .recent-item {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 12px;
-      text-align: center;
-      border: 1px solid var(--border-color);
-      transition: var(--transition);
-    }
-    .recent-item:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-    .recent-item img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-      margin-bottom: 8px;
-      filter: invert(0.8);
-    }
-    .recent-item p {
-      font-size: 12px;
-      font-weight: 600;
     }
 
     /* ===== FAQ SECTION ===== */
@@ -2020,7 +2006,6 @@
         <span class="chip" data-scroll="trade-section">Trade-in</span>
         <span class="chip" data-scroll="gallery">Gallery</span>
         <span class="chip" data-scroll="faq">FAQ</span>
-        <span class="chip" data-scroll="recently-viewed">Recent</span>
       </div>
 
       <div class="hero-stats">
@@ -2067,7 +2052,7 @@
 <!-- Fast Sales (hidden) -->
 <section id="fast-sales" style="display:none;"></section>
 
-<!-- Preorder PC Builds -->
+<!-- Preorder PC Builds – 3‑column fixed grid, larger cards -->
 <section id="hot" class="reveal">
   <h2 class="section-title">Preorder PC Builds</h2>
   <div class="section-subtitle">Custom Gaming PCs • Built On Demand</div>
@@ -2117,12 +2102,12 @@
 
 <div class="installment-banner reveal">0% Interest Installment Available • SPayLater</div>
 
-<!-- Preorder Consoles (13 cards – grid now 3 columns on mobile) -->
+<!-- Preorder Consoles – auto-resize text & smaller button -->
 <section id="preorder-console" class="reveal">
   <h2 class="section-title">Preorder Consoles</h2>
   <div class="section-subtitle">Used Units • Reserve Before Stock Arrival</div>
   <div class="hot-grid">
-    <!-- 13 console cards (unchanged) -->
+    <!-- All console cards (unchanged content) -->
     <div class="hot-card">
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/ps5-pro.webp" alt="PS5 Pro" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Pro';">
@@ -2282,12 +2267,6 @@
   <h2 class="trade-title">Game & Console Trade‑In</h2>
   <p class="trade-desc">Got old games or consoles? Trade them in!</p>
   <button class="trade-btn" id="tradeBtn">Inquire About Trade‑In</button>
-</section>
-
-<!-- Recently Viewed Section -->
-<section id="recently-viewed" class="reveal">
-  <h2 class="section-title">Recently Viewed</h2>
-  <div class="recent-grid" id="recent-grid"></div>
 </section>
 
 <!-- Gallery -->
@@ -2483,42 +2462,6 @@
     const phone = "60163691936";
     const message = "Hi FAZGAME 👋 I'm interested in trading in my games/consoles.";
     window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`, '_blank');
-  });
-
-  // ===== RECENTLY VIEWED =====
-  function addToRecentlyViewed(productName, productIcon) {
-    let recent = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
-    recent = recent.filter(item => item.name !== productName);
-    recent.unshift({ name: productName, icon: productIcon || 'https://api.iconify.design/mdi/package.svg' });
-    if (recent.length > 5) recent.pop();
-    localStorage.setItem('recentlyViewed', JSON.stringify(recent));
-    displayRecentlyViewed();
-  }
-
-  function displayRecentlyViewed() {
-    const recentGrid = document.getElementById('recent-grid');
-    if (!recentGrid) return;
-    const recent = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
-    if (recent.length === 0) {
-      recentGrid.innerHTML = '<p style="grid-column:1/-1; text-align:center;">No items viewed yet.</p>';
-      return;
-    }
-    recentGrid.innerHTML = recent.map(item => `
-      <div class="recent-item">
-        <img src="${item.icon}" alt="" onerror="this.src='https://api.iconify.design/mdi/package.svg';">
-        <p>${item.name}</p>
-      </div>
-    `).join('');
-  }
-  displayRecentlyViewed();
-
-  document.addEventListener('click', function(e) {
-    const card = e.target.closest('.product-card') || e.target.closest('.hot-card');
-    if (card) {
-      const title = card.querySelector('.hot-title, .product-info h4')?.textContent || 'Product';
-      const icon = card.querySelector('.product-icon img')?.src || '';
-      addToRecentlyViewed(title, icon);
-    }
   });
 
   // ===== FAQ ACCORDION =====
