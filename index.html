@@ -1373,19 +1373,20 @@
       opacity: 1;
     }
 
-    /* ===== GRID LAYOUTS ===== */
+    /* ===== GRID LAYOUTS – FIXED FOR MOBILE ===== */
     .hot-grid {
       display: grid;
       gap: 14px;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, 1fr); /* 3 columns on all screens by default, then overridden */
       margin: 0 auto;
+      width: 100%;
     }
-    /* PC builds section – larger cards */
+    /* PC builds – larger cards */
     #hot .hot-grid {
-      grid-template-columns: repeat(3, minmax(240px, 1fr));
+      grid-template-columns: repeat(3, minmax(200px, 1fr));
       gap: 20px;
     }
-    /* Consoles section – auto-resize text and smaller button */
+    /* Console cards – auto resize text and no reserve button */
     #preorder-console .hot-card .hot-title {
       font-size: clamp(12px, 4vw, 16px);
       white-space: normal;
@@ -1394,23 +1395,38 @@
     #preorder-console .hot-card .hot-desc {
       font-size: clamp(10px, 3vw, 12px);
     }
-    #preorder-console .hot-card .reserve-btn {
-      font-size: 10px;
-      padding: 2px 6px;
-      min-height: 32px;
-    }
-    @media (min-width: 600px) {
+    /* Responsive overrides */
+    @media (max-width: 768px) {
       .hot-grid {
-        gap: 20px;
+        gap: 10px;
+      }
+      #hot .hot-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+    }
+    @media (max-width: 480px) {
+      .hot-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      #hot .hot-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (min-width: 600px) and (max-width: 1199px) {
+      .hot-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       }
       #hot .hot-grid {
-        grid-template-columns: repeat(3, minmax(240px, 1fr));
+        grid-template-columns: repeat(3, minmax(220px, 1fr));
       }
     }
     @media (min-width: 1200px) {
       #preorder-console .hot-grid {
         grid-template-columns: repeat(6, minmax(140px, 1fr));
+      }
+      #hot .hot-grid {
+        grid-template-columns: repeat(3, minmax(240px, 1fr));
       }
     }
 
@@ -2213,154 +2229,138 @@
 
 <div class="installment-banner reveal">0% Interest Installment Available • SPayLater</div>
 
-<!-- Preorder Consoles -->
+<!-- Preorder Consoles (no reserve button) -->
 <section id="preorder-console" class="reveal">
   <h2 class="section-title">Preorder Consoles</h2>
   <div class="section-subtitle">Used Units • Reserve Before Stock Arrival</div>
   <div class="hot-grid">
-    <!-- All console cards with data attributes for modal -->
-    <div class="hot-card" data-product='{"name":"PS5 Pro Digital","price":"RM2750","image":"images/ps5-pro.webp","specs":["Condition: Used","Storage: 2TB SSD","Includes: DualSense Controller","Wi-Fi 6, 4K Gaming","Backwards Compatible","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"PS5 Pro Digital","price":"RM2750","image":"images/ps5-pro.webp","specs":["Condition: Used","Storage: 2TB SSD","Includes: DualSense Controller","Wi-Fi 6, 4K Gaming","Backwards Compatible","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/ps5-pro.webp" alt="PS5 Pro" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Pro';">
       <div class="hot-card-content">
         <div class="hot-title">PS5 Pro Digital</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM2750</span>
-          <button class="reserve-btn" data-console="PS5 Pro Digital">RESERVE</button>
         </div>
       </div>
     </div>
-    <!-- Other console cards (abbreviated for brevity – same pattern) -->
-    <div class="hot-card" data-product='{"name":"PS4 Slim 500GB","price":"RM550","image":"images/ps4-slim.webp","specs":["Condition: Used","Storage: 500GB HDD","Includes: DualShock 4","HDMI Cable","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"PS4 Slim 500GB","price":"RM550","image":"images/ps4-slim.webp","specs":["Condition: Used","Storage: 500GB HDD","Includes: DualShock 4","HDMI Cable","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/ps4-slim.webp" alt="PS4 Slim" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS4+Slim';">
       <div class="hot-card-content">
         <div class="hot-title">PS4 Slim 500GB</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM550</span>
-          <button class="reserve-btn" data-console="PS4 Slim 500GB">RESERVE</button>
         </div>
       </div>
     </div>
-    <div class="hot-card" data-product='{"name":"PS4 Pro 1TB","price":"RM650","image":"images/ps4-pro.webp","specs":["Condition: Used","Storage: 1TB HDD","4K Gaming","Includes: DualShock 4","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"PS4 Pro 1TB","price":"RM650","image":"images/ps4-pro.webp","specs":["Condition: Used","Storage: 1TB HDD","4K Gaming","Includes: DualShock 4","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/ps4-pro.webp" alt="PS4 Pro" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS4+Pro';">
       <div class="hot-card-content">
         <div class="hot-title">PS4 Pro 1TB</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM650</span>
-          <button class="reserve-btn" data-console="PS4 Pro 1TB">RESERVE</button>
         </div>
       </div>
     </div>
-    <div class="hot-card" data-product='{"name":"PS5 Fat Disc","price":"RM1450","image":"images/ps5-fat.webp","specs":["Condition: Used","Storage: 825GB SSD","Disc Version","Includes: DualSense","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"PS5 Fat Disc","price":"RM1450","image":"images/ps5-fat.webp","specs":["Condition: Used","Storage: 825GB SSD","Disc Version","Includes: DualSense","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/ps5-fat.webp" alt="PS5 Fat" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Fat';">
       <div class="hot-card-content">
         <div class="hot-title">PS5 Fat Disc</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM1450</span>
-          <button class="reserve-btn" data-console="PS5 Fat Disc">RESERVE</button>
         </div>
       </div>
     </div>
-    <div class="hot-card" data-product='{"name":"PS5 Slim Disc","price":"RM1650","image":"images/ps5-slim.webp","specs":["Condition: Used","Storage: 1TB SSD","Slim Design","Disc Version","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"PS5 Slim Disc","price":"RM1650","image":"images/ps5-slim.webp","specs":["Condition: Used","Storage: 1TB SSD","Slim Design","Disc Version","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/ps5-slim.webp" alt="PS5 Slim" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=PS5+Slim';">
       <div class="hot-card-content">
         <div class="hot-title">PS5 Slim Disc</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM1650</span>
-          <button class="reserve-btn" data-console="PS5 Slim Disc">RESERVE</button>
         </div>
       </div>
     </div>
-    <div class="hot-card" data-product='{"name":"Switch Lite","price":"RM400","image":"images/switch-lite.webp","specs":["Condition: Used","Handheld Only","Battery: 3-7 hours","Includes: Charger","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"Switch Lite","price":"RM400","image":"images/switch-lite.webp","specs":["Condition: Used","Handheld Only","Battery: 3-7 hours","Includes: Charger","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/switch-lite.webp" alt="Switch Lite" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Switch+Lite';">
       <div class="hot-card-content">
         <div class="hot-title">Switch Lite</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM400</span>
-          <button class="reserve-btn" data-console="Switch Lite">RESERVE</button>
         </div>
       </div>
     </div>
-    <div class="hot-card" data-product='{"name":"Switch OLED White","price":"RM750","image":"images/switch-oled-white.webp","specs":["Condition: Used","7-inch OLED Screen","64GB Storage","Includes: Joy-Cons","Dock Included","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"Switch OLED White","price":"RM750","image":"images/switch-oled-white.webp","specs":["Condition: Used","7-inch OLED Screen","64GB Storage","Includes: Joy-Cons","Dock Included","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/switch-oled-white.webp" alt="Switch OLED White" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=OLED+White';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED White</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM750</span>
-          <button class="reserve-btn" data-console="Switch OLED White">RESERVE</button>
         </div>
       </div>
     </div>
-    <!-- Remaining console cards (same pattern) – omitted for brevity but will be included in final -->
-    <div class="hot-card" data-product='{"name":"Switch OLED Neon","price":"RM750","image":"images/switch-oled-neon.webp","specs":["Condition: Used","7-inch OLED Screen","64GB Storage","Neon Joy-Cons","Dock Included","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"Switch OLED Neon","price":"RM750","image":"images/switch-oled-neon.webp","specs":["Condition: Used","7-inch OLED Screen","64GB Storage","Neon Joy-Cons","Dock Included","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/switch-oled-neon.webp" alt="Switch OLED Neon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=OLED+Neon';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Neon</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM750</span>
-          <button class="reserve-btn" data-console="Switch OLED Neon">RESERVE</button>
         </div>
       </div>
     </div>
-    <div class="hot-card" data-product='{"name":"Switch OLED Zelda","price":"RM850","image":"images/switch-zelda.webp","specs":["Condition: Used","Limited Edition","7-inch OLED Screen","Zelda Themed Dock","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"Switch OLED Zelda","price":"RM850","image":"images/switch-zelda.webp","specs":["Condition: Used","Limited Edition","7-inch OLED Screen","Zelda Themed Dock","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/switch-zelda.webp" alt="Switch OLED Zelda" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Zelda+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Zelda</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM850</span>
-          <button class="reserve-btn" data-console="Switch OLED Zelda">RESERVE</button>
         </div>
       </div>
     </div>
-    <div class="hot-card" data-product='{"name":"Switch OLED Splatoon","price":"RM850","image":"images/switch-splatoon.webp","specs":["Condition: Used","Limited Edition","Splatoon Themed","OLED Screen","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"Switch OLED Splatoon","price":"RM850","image":"images/switch-splatoon.webp","specs":["Condition: Used","Limited Edition","Splatoon Themed","OLED Screen","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/switch-splatoon.webp" alt="Switch OLED Splatoon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Splatoon+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Splatoon</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM850</span>
-          <button class="reserve-btn" data-console="Switch OLED Splatoon">RESERVE</button>
         </div>
       </div>
     </div>
-    <div class="hot-card" data-product='{"name":"Switch OLED Mario","price":"RM850","image":"images/switch-mario.webp","specs":["Condition: Used","Mario Red Edition","OLED Screen","Includes: Carry Case","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"Switch OLED Mario","price":"RM850","image":"images/switch-mario.webp","specs":["Condition: Used","Mario Red Edition","OLED Screen","Includes: Carry Case","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/switch-mario.webp" alt="Switch OLED Mario" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Mario+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Mario</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM850</span>
-          <button class="reserve-btn" data-console="Switch OLED Mario">RESERVE</button>
         </div>
       </div>
     </div>
-    <div class="hot-card" data-product='{"name":"Switch OLED Pokemon","price":"RM850","image":"images/switch-pokemon.webp","specs":["Condition: Used","Pokemon Edition","OLED Screen","Special Backplate","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"Switch OLED Pokemon","price":"RM850","image":"images/switch-pokemon.webp","specs":["Condition: Used","Pokemon Edition","OLED Screen","Special Backplate","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/switch-pokemon.webp" alt="Switch OLED Pokemon" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Pokemon+OLED';">
       <div class="hot-card-content">
         <div class="hot-title">Switch OLED Pokemon</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM850</span>
-          <button class="reserve-btn" data-console="Switch OLED Pokemon">RESERVE</button>
         </div>
       </div>
     </div>
-    <div class="hot-card" data-product='{"name":"Switch 2 Edition","price":"RM1700","image":"images/switch-2.webp","specs":["Condition: Used","Next-gen Switch","Enhanced Performance","Larger Screen","Backwards Compatible","1 Month Warranty"]}'>
+    <div class="hot-card" data-product='{"name":"Switch 2 Edition","price":"RM1700","image":"images/switch-2.webp","specs":["Condition: Used","Next-gen Switch","Enhanced Performance","Larger Screen","Backwards Compatible","Warranty: 14 Days"]}'>
       <span class="badge badge-left">USED</span> <span class="badge badge-right">PRE-ORDER</span>
       <img src="images/switch-2.webp" alt="Switch 2" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x500/222/ffd84d?text=Switch+2';">
       <div class="hot-card-content">
         <div class="hot-title">Switch 2 Edition</div>
         <div class="hot-price-row">
           <span class="hot-desc">RM1700</span>
-          <button class="reserve-btn" data-console="Switch 2 Edition">RESERVE</button>
         </div>
       </div>
     </div>
@@ -2587,7 +2587,6 @@
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
 
-    // Set modal reserve button to open WhatsApp with product details
     modalReserveBtn.onclick = () => {
       const phone = "60163691936";
       const message = `Hi FAZGAME 👋 I would like to reserve ${productData.name} (${productData.price}).`;
@@ -2608,12 +2607,11 @@
     if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
   });
 
-  // Click handler for preorder cards to open modal (except reserve button)
+  // Click handler for preorder cards to open modal (no separate reserve button)
   document.querySelectorAll('.hot-card').forEach(card => {
-    const reserveBtn = card.querySelector('.reserve-btn');
     card.addEventListener('click', (e) => {
-      // If click is on reserve button, don't open modal (reserve button handles its own WhatsApp)
-      if (e.target === reserveBtn || reserveBtn?.contains(e.target)) return;
+      // Prevent opening modal if clicked on a child button (if any, but we removed buttons from console)
+      if (e.target.closest('.reserve-btn')) return; // fallback in case some have button
       const productAttr = card.getAttribute('data-product');
       if (productAttr) {
         try {
@@ -2624,7 +2622,7 @@
     });
   });
 
-  // Existing event delegation for product-buy and reserve-btn (kept from before)
+  // Existing event delegation for product-buy (inventory) and legacy reserve-btn (PC builds)
   document.addEventListener('click', function(e) {
     const button = e.target.closest('.product-buy');
     if (button) {
